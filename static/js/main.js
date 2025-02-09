@@ -81,7 +81,7 @@ async function updateLogs() {
                     ${new Date(log.timestamp * 1000).toLocaleString()}
                 </span>
             </div>
-            <pre class="text-sm bg-gray-100 p-2 rounded">${log.output || log.error}</pre>
+            <pre class="text-sm bg-gray-100 p-2 rounded whitespace-pre-wrap break-words">${log.output || log.error}</pre>
         `;
         logList.appendChild(div);
     });
