@@ -2,6 +2,41 @@
 
 スクリプト実行を管理するためのWebベースのコントロールシステムです。Basic認証を使用してセキュアなスクリプト実行と管理を提供します。
 
+## 概要
+
+このプロジェクトは、ミニPC（Raspberry Pi、Rock Pi等）を自宅サーバーとして活用し、外出先からスマートフォンでスクリプトを実行・管理するための実験的なリポジトリです。Tailscaleを利用することで、安全なリモートアクセスを実現します。
+
+### 想定される使用シナリオ
+- 自宅サーバーの状態監視
+- 家庭内IoTデバイスの制御
+- バックアップスクリプトのリモート実行
+- システムメンテナンス作業の自動化
+
+## システム要件
+
+- ミニPC（Raspberry Pi等）
+- Tailscaleアカウントとセットアップ
+- Python 3.x
+
+## Tailscaleセットアップ
+
+1. Tailscaleをインストール:
+```bash
+curl -fsSL https://tailscale.com/install.sh | sh
+```
+
+2. Tailscaleにログイン:
+```bash
+sudo tailscale up
+```
+
+3. Tailscaleの状態確認:
+```bash
+tailscale status
+```
+
+セットアップ後は、TailscaleのIPアドレスを使用してアプリケーションにアクセスできます。
+
 ## 機能
 
 - WebUIを通じたスクリプト実行
