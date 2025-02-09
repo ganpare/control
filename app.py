@@ -2,6 +2,11 @@ from flask import Flask, request, jsonify, render_template
 from functools import wraps
 import subprocess
 import time
+import os
+from dotenv import load_dotenv
+
+# 環境変数の読み込み
+load_dotenv()
 
 app = Flask(__name__, static_folder="static", template_folder="static")
 
@@ -9,6 +14,13 @@ app = Flask(__name__, static_folder="static", template_folder="static")
 @app.route("/")
 def home():
     return render_template("index.html")
+
+@app.route("/api/auth-config")
+def auth_config():
+    return jsonify({
+        "username": os.getenv('ADMIN_USERNAME'),
+        "password": os.getenv('ADMIN_PASSWORD')
+    })
 
 # スクリプト辞書（登録されたスクリプト一覧）
 scripts = {
@@ -21,7 +33,7 @@ execution_logs = []
 
 # Basic認証の実装
 def check_auth(username, password):
-    return username == 'admin' and password == 'secret'
+    return username == os.getenv('ADMIN_USERNAME') and password == os.getenv('ADMIN_PASSWORD')
 
 def requires_auth(f):
     @wraps(f)

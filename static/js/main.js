@@ -1,4 +1,21 @@
-let auth = btoa('admin:secret');
+// 認証情報を取得する関数
+async function getAuthConfig() {
+    const response = await fetch('/api/auth-config');
+    const config = await response.json();
+    return btoa(`${config.username}:${config.password}`);
+}
+
+// グローバルな認証トークン
+let auth;
+
+// 初期化関数
+async function initialize() {
+    auth = await getAuthConfig();
+    await fetchScripts();
+    await updateLogs();
+    // 定期的にログを更新
+    setInterval(updateLogs, 5000);
+}
 
 async function fetchScripts() {
     const response = await fetch('/api/scripts', {
@@ -70,8 +87,5 @@ async function updateLogs() {
     });
 }
 
-// 初期ロード
-fetchScripts();
-updateLogs();
-// 定期的にログを更新
-setInterval(updateLogs, 5000);
+// アプリケーションの初期化
+initialize();

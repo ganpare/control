@@ -46,12 +46,22 @@ tailscale status
 
 ## セットアップ
 
-1. 依存関係のインストール:
+1. 環境変数の設定:
+```bash
+cp .env.example .env
+```
+`.env`ファイルを編集して、実際の認証情報を設定してください：
+```
+ADMIN_USERNAME=your_username_here
+ADMIN_PASSWORD=your_password_here
+```
+
+2. 依存関係のインストール:
 ```bash
 pip install -r requirements.txt
 ```
 
-2. アプリケーションの起動:
+3. アプリケーションの起動:
 ```bash
 python app.py
 ```
