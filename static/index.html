@@ -6,7 +6,7 @@
     <title>Ubuntu Remote Control</title>
     <link rel="manifest" href="/static/manifest.json">
     <meta name="theme-color" content="#000000">
-    <link rel="apple-touch-icon" href="/static/icons/icon-192x192.png">
+    <link rel="apple-touch-icon" href="/static/icons/pwa_icon_192x192.png">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -15,6 +15,13 @@
     <div class="container mx-auto px-4 py-8">
         <h1 class="text-3xl font-bold mb-8">Ubuntu Remote Control</h1>
         
+        <!-- Install Button -->
+        <div id="installContainer" class="hidden mb-4">
+            <button id="installBtn" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                アプリをインストール
+            </button>
+        </div>
+
         <div class="grid md:grid-cols-2 gap-6">
             <!-- Scripts Panel -->
             <div class="bg-white rounded-lg shadow p-6">
@@ -32,6 +39,27 @@
 
     <script src="/static/js/main.js"></script>
     <script>
+        // PWA Install prompt
+        let deferredPrompt;
+        const installContainer = document.getElementById('installContainer');
+        const installBtn = document.getElementById('installBtn');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            installContainer.classList.remove('hidden');
+        });
+
+        installBtn.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                console.log(`User response to the install prompt: ${outcome}`);
+                deferredPrompt = null;
+                installContainer.classList.add('hidden');
+            }
+        });
+
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('/static/js/sw.js')
